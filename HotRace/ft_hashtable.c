@@ -6,7 +6,7 @@
 /*   By: fle-blay <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/11 10:27:19 by fle-blay          #+#    #+#             */
-/*   Updated: 2021/12/11 15:29:20 by fle-blay         ###   ########.fr       */
+/*   Updated: 2021/12/11 20:59:39 by fle-blay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,14 +116,60 @@ void	fill_ht(t_pair **ht, char **cntarr, int sizeht)
 	}
 }
 
+//char	*get_value(t_pair **ht, char *key, int sizeht)
+//{
+//	int	j;
+//	int offset;
+//
+//	if (! key)
+//		return (NULL);
+//	j = fxhash(key, sizeht);
+//	offset = 0;
+//	while (offset < sizeht && ht[(j + offset) % sizeht]->key != key)
+//		offset++;
+//	if (ht[(j + offset) % sizeht]->key == key)
+//		return (ht[(j + offset) % sizeht]->value);
+//	else
+//		return (NULL);
+//}
 
+void	get_value(t_pair **ht, int sizeht, char **cntqry)
+{
+	//ft_cmp to add
+	int	j;
+	int offset;
+	int	i;
+
+	if (! cntqry)
+		return;
+	i = 0;
+	while (cntqry[i])
+	{
+		j = fxhash(cntqry[i], sizeht);
+		offset = 0;
+		//ft_cmp of pointers to add
+		while (offset < sizeht && ht[(j + offset) % sizeht]->key != cntqry[i])
+			printf("la\n") &&  offset++;
+		//ft_cmp of pointers to add
+		if (ht[(j + offset) % sizeht]->key == cntqry[i])
+		{
+			ft_putstr_fd(ht[(j + offset) % sizeht]->value, 1);
+			printf("ici\n");
+		}
+		else
+			ft_putstr_fd("not found\n", 1);
+		i++;
+	}
+}
 #include <stdio.h>
 
 int main()
 {
 	char *input;
 	char *content;
+	char *query;
 	char **cntarr;
+	char **cntqry;
 	t_pair **ht;
 	int	i;
 
@@ -143,5 +189,15 @@ int main()
 		printf("ht[%d] : key -> %s, value -> %s\n", i, ht[i]->key, ht[i]->value);
 		i++;
 	}
+	query = ft_substr(input, ft_strnstr(input, "\n\n", ft_strlen(input)) - input, ft_strlen(input));
+	cntqry = ft_split(query, '\n');
+	i = 0;
+	while (cntqry[i])
+	{
+		printf("%s\n", cntqry[i]);
+		i++;
+	}
+	get_value(ht, get_sizetab(cntarr) / 2, cntqry);
+
 	return (0);
 }
