@@ -6,198 +6,115 @@
 /*   By: fle-blay <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/11 10:27:19 by fle-blay          #+#    #+#             */
-/*   Updated: 2021/12/11 20:59:39 by fle-blay         ###   ########.fr       */
+/*   Updated: 2021/12/11 17:27:19 by fle-blay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdlib.h>
-#include "libft.h"
 #include "ft_hashtable.h"
 
-char	*get_input()
+char	*get_input(char	*mainstr)
 {
-	char	tab[BUFFER_SIZE + 1];
-	int		i;
+	ssize_t	ret;
+	ssize_t	size;
+	ssize_t	to_add;
 	char	*tmp;
-	char	*mainstr;
 
-	tmp = NULL;
-	i = -1;
-	mainstr = ft_strdup("");
-	if (! mainstr)
-		return (NULL);
-	while (++i < BUFFER_SIZE + 1)
-		tab[i] = '\0';
-	while (mainstr && read(0, tab, BUFFER_SIZE))
+	size = 0;
+	ret = BUFFER_SIZE;
+	to_add = 0;
+	while (ret)
 	{
-		tmp = mainstr;
-		mainstr = ft_strjoin(tmp, tab);
+		if (to_add == 0)
+			mainstr = ft_realloc(mainstr, size, &to_add, &tmp);
+		if (!mainstr)
+			return ((char *)put_error("Error: ", (long int) NULL));
+		ret = read(0, mainstr + size, to_add);
+		if (ret == -1)
+			return ((char *)put_error("Error: ", (long int) NULL));
+		mainstr[size + ret] = 0;
+		size += ret;
+		to_add -= ret;
 		free(tmp);
-		i = -1;
-		while (++i < BUFFER_SIZE + 1)
-			tab[i] = '\0';
+		tmp = NULL;
 	}
 	return (mainstr);
 }
 
-int	get_sizetab(char **tab)
+size_t	hash2(char **key, int sizeht, int multiplier)
 {
-	int	i;
+	size_t	result;
 
-	i = 0;
-	while (tab && tab[i])
-		i++;
-	return (i);
-}
-
-int	fxhash(char *key, int sizeht)
-{
-	int	i;
-	int	result;
-
-	i = 0;
 	result = 0;
-	if (! key)
-		return (i);
-	while (key[i])
+	while (**key && **key != '\n')
 	{
-		result += key[i];
-		i++;
+		result = result * 256 + **key;
+		(*key)++;
 	}
-	return (result % sizeht);
+	(*key)++;
+	return (result % (sizeht * multiplier));
 }
 
-t_pair	**init_ht(int sizeht)
+int	ft_strcmp_newline(const char *s1, const char *s2)
 {
-	t_pair **ht;
-
-	ht = (t_pair **)malloc(sizeht * sizeof(t_pair *));
-	if (! ht)
-		return (NULL);
-	while (sizeht--)
-		ht[sizeht] = NULL;
-	return (ht);
-}
-
-t_pair	*mk_pair(char *key, char *value)
-{
-	t_pair *nw;
-
-	nw = malloc(sizeof(t_pair));
-	if (!nw)
-		return (NULL);
-	nw->key = key;
-	nw->value = value;
-	return (nw);
-}
-
-void	fill_ht(t_pair **ht, char **cntarr, int sizeht)
-{
-	int	i;
-	int	j;
-	int offset;
-
-	i = 0;
-	while (cntarr[i])
+	while (*s1 == *s2 && *s1 && *s1 != '\n')
 	{
+		s1++;
+		s2++;
+	}
+	return (*s1 != *s2);
+}
+
+void	get_value(char **ht, char *input, int sizeht, int multiplier)
+{
+	size_t	j;
+	char	*tmp;
+	ssize_t	offset;
+	size_t	size;
+
+	size = multiplier * sizeht;
+	while (*input && *input != '\n')
+	{
+		tmp = input;
+		j = hash2(&input, sizeht, multiplier);
 		offset = 0;
-		while (offset < sizeht)
+		while (ht[j + offset])
 		{
-			j = fxhash(cntarr[i], sizeht);
-			if (ht[(j + offset) % sizeht] == NULL)
+			if (j + offset == size)
+				offset -= (ssize_t)size;
+			if (!ft_strcmp_newline(ht[j + offset], tmp))
 			{
-				ht[(j + offset) % sizeht] = mk_pair(cntarr[i], cntarr[i + 1]);
-				i += 2;
+				ft_putvalue_newline(ht[j + offset]);
+				break ;
 			}
-			else
-				offset++;
+			offset++;
 		}
+		if (!ht[j + offset])
+			print_not_found(tmp);
 	}
 }
 
-//char	*get_value(t_pair **ht, char *key, int sizeht)
-//{
-//	int	j;
-//	int offset;
-//
-//	if (! key)
-//		return (NULL);
-//	j = fxhash(key, sizeht);
-//	offset = 0;
-//	while (offset < sizeht && ht[(j + offset) % sizeht]->key != key)
-//		offset++;
-//	if (ht[(j + offset) % sizeht]->key == key)
-//		return (ht[(j + offset) % sizeht]->value);
-//	else
-//		return (NULL);
-//}
-
-void	get_value(t_pair **ht, int sizeht, char **cntqry)
+int	main(void)
 {
-	//ft_cmp to add
-	int	j;
-	int offset;
-	int	i;
+	char	*input;
+	char	**ht;
+	char	*tmp;
+	int		multiplier;
+	int		size;
 
-	if (! cntqry)
-		return;
-	i = 0;
-	while (cntqry[i])
-	{
-		j = fxhash(cntqry[i], sizeht);
-		offset = 0;
-		//ft_cmp of pointers to add
-		while (offset < sizeht && ht[(j + offset) % sizeht]->key != cntqry[i])
-			printf("la\n") &&  offset++;
-		//ft_cmp of pointers to add
-		if (ht[(j + offset) % sizeht]->key == cntqry[i])
-		{
-			ft_putstr_fd(ht[(j + offset) % sizeht]->value, 1);
-			printf("ici\n");
-		}
-		else
-			ft_putstr_fd("not found\n", 1);
-		i++;
-	}
-}
-#include <stdio.h>
-
-int main()
-{
-	char *input;
-	char *content;
-	char *query;
-	char **cntarr;
-	char **cntqry;
-	t_pair **ht;
-	int	i;
-
-	input = get_input();
-	printf(">%s<\n", input);
-	content = ft_substr(input, 0, ft_strnstr(input, "\n\n", ft_strlen(input)) - input);
-	printf("apres le substr\n");
-	printf(">%s<\n", content);
-	cntarr = ft_split(content, '\n');
-	printf("%d\n", get_sizetab(cntarr));
-	ht = init_ht(get_sizetab(cntarr) / 2);
-	fill_ht(ht, cntarr, get_sizetab(cntarr) / 2);
-
-	i = 0;
-	while (i < get_sizetab(cntarr) / 2)
-	{
-		printf("ht[%d] : key -> %s, value -> %s\n", i, ht[i]->key, ht[i]->value);
-		i++;
-	}
-	query = ft_substr(input, ft_strnstr(input, "\n\n", ft_strlen(input)) - input, ft_strlen(input));
-	cntqry = ft_split(query, '\n');
-	i = 0;
-	while (cntqry[i])
-	{
-		printf("%s\n", cntqry[i]);
-		i++;
-	}
-	get_value(ht, get_sizetab(cntarr) / 2, cntqry);
-
+	input = get_input(NULL);
+	if (!input)
+		return (1);
+	tmp = input;
+	size = get_sizetab(input);
+	if (size % 2 == 1 || !size)
+		size += 1 + !size;
+	multiplier = init_ht(&ht, size / 2);
+	if (multiplier == -1 || !multiplier)
+		return ((int)put_error("Error: ", 1));
+	fill_ht(ht, &input, size / 2, multiplier);
+	if (input[0])
+		get_value(ht, ++input, size / 2, multiplier);
+	free(tmp);
+	free(ht);
 	return (0);
 }

@@ -1,25 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_hastable.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fle-blay <fle-blay@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fle-blay <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/08 18:37:26 by fle-blay          #+#    #+#             */
-/*   Updated: 2021/12/11 17:12:41 by fle-blay         ###   ########.fr       */
+/*   Created: 2021/12/11 11:44:22 by fle-blay          #+#    #+#             */
+/*   Updated: 2021/12/11 11:47:37 by fle-blay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_hashtable.h"
+#ifndef FT_HASHTABLE_H
+# define FT_HASHTABLE_H
 
-void	ft_putstr_fd(char *s, int fd)
-{
-	int	i;
+typedef struct s_pair {
+	char	*key;
+	char	*value;
+}	t_pair;
 
-	i = 0;
-	if (! s)
-		return ;
-	while (s[i])
-		i++;
-	write(fd, s, i);
-}
+#endif

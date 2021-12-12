@@ -10,31 +10,59 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_hashtable.h"
 
-char	*ft_strjoin(char const *s1, char const *s2)
+void	ft_memcpy(char *dst, char *src, size_t size)
 {
-	char	*join;
-	int		i;
+	long int	*ldst;
+	long int	*lsrc;
 
-	join = NULL;
-	i = 0;
-	if (! s1 || ! s2)
-		return (NULL);
-	join = (char *)malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
-	if (! join)
-		return (NULL);
-	while (s1[i])
+	while (size % sizeof(long int) && size > 0)
 	{
-		join[i] = s1[i];
-		i++;
+		*dst = *src;
+		dst++;
+		src++;
+		--size;
 	}
-	i = 0;
-	while (s2[i])
+	ldst = (long int *)dst;
+	lsrc = (long int *)src;
+	while (size > 0)
 	{
-		join[ft_strlen(s1) + i] = s2[i];
-		i++;
+		*ldst = *lsrc;
+		ldst++;
+		lsrc++;
+		size -= 8;
 	}
-	join[ft_strlen(s1) + i] = '\0';
-	return (join);
+}
+
+void	ft_memcpy_old(char *dst, char *src, size_t size)
+{
+	while (size > 0)
+	{
+		*dst = *src;
+		dst++;
+		src++;
+		--size;
+	}
+}
+
+char	*ft_realloc(char *s, size_t old, ssize_t *to_add, char **tmp)
+{
+	char	*ret;
+
+	*tmp = s;
+	*to_add = !old * BUFFER_SIZE + old;
+	ret = NULL;
+	while (!ret && *to_add >= BUFFER_SIZE)
+	{
+		ret = (char *)malloc((old + *to_add + 1) * sizeof(char));
+		if (!ret)
+			*to_add >>= 1;
+	}
+	if (!ret)
+		return (NULL);
+	if (!s)
+		return (ret);
+	ft_memcpy(ret, s, old);
+	return (ret);
 }

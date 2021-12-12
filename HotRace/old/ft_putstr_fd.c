@@ -1,32 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fle-blay <fle-blay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/08 10:35:02 by fle-blay          #+#    #+#             */
-/*   Updated: 2021/11/08 11:02:33 by fle-blay         ###   ########.fr       */
+/*   Created: 2021/11/08 18:37:26 by fle-blay          #+#    #+#             */
+/*   Updated: 2021/12/11 17:12:41 by fle-blay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_hashtable.h"
+#include "libft.h"
 
-char	*ft_strdup(const char *s)
+void	ft_putstr_fd(char *s, int fd)
 {
-	int		i;
-	char	*copy;
+	int	i;
 
 	i = 0;
-	copy = NULL;
-	copy = (char *)malloc((ft_strlen(s) + 1) * sizeof(char));
-	if (! copy)
-		return (NULL);
+	if (! s)
+		return ;
 	while (s[i])
-	{
-		copy[i] = s[i];
 		i++;
-	}
-	copy[i] = '\0';
-	return (copy);
+	write(fd, s, i);
 }
