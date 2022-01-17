@@ -6,13 +6,14 @@
 /*   By: fle-blay <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 16:40:13 by fle-blay          #+#    #+#             */
-/*   Updated: 2022/01/09 22:55:36 by fle-blay         ###   ########.fr       */
+/*   Updated: 2022/01/17 12:49:16 by fle-blay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdlib.h>
 #include "libunit.h"
+#include <stdio.h>
 
 t_test_ut	*new_test_ut(char *test_name, int (*test_fx)(void))
 {
@@ -55,6 +56,7 @@ void	fork_ut(t_routine_ut *routine, int *nb_test, char *fx_name, int *sum_ok)
 	pid_t		child;
 	int			child_status;
 	t_list_ut	*i;
+	t_test_ut	*test;
 
 	i = routine->test_list;
 	while (i)
@@ -63,7 +65,14 @@ void	fork_ut(t_routine_ut *routine, int *nb_test, char *fx_name, int *sum_ok)
 		if (child == -1)
 			break ;
 		if (child == 0)
-			exit(((t_test_ut *)(i->content))->test_fx());
+		{
+			test = (t_test_ut *)(i->content);
+			//printf("ici\n");
+			ft_lstclear_ut(&(routine->test_list), NULL);
+			//printf("la\n");
+			//exit(((t_test_ut *)(i->content))->test_fx());
+			exit(test->test_fx());
+		}
 		if (child > 0)
 		{
 			print_info_ut(fx_name, ((t_test_ut *)(i->content))->test_name);
