@@ -5,7 +5,7 @@ CC			= cc
 CFLAGS		= -Wall -Wextra -Werror
 
 TEST_DIR_1	= ./ft_strlen/
-TEST_LIST_1	= 00_launcher.c 01_basic_test.c
+TEST_LIST_1	= 00_launcher.c 01_basic_test.c 02_phony_timeout.c
 SRCS_TEST_1	= ${addprefix ${TEST_DIR_1}, ${TEST_LIST_1}} 
 
 TEST_DIR_2	= ./ft_strncmp/

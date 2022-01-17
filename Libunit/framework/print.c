@@ -6,7 +6,7 @@
 /*   By: fle-blay <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 13:14:35 by fle-blay          #+#    #+#             */
-/*   Updated: 2022/01/09 22:18:03 by gusalle          ###   ########.fr       */
+/*   Updated: 2022/01/17 14:03:11 by fle-blay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ void	print_signaled_ut(int child_status, t_routine_ut *routine)
 		ft_putstr_fd_ut("\x1b[33m[SIGPIPE]\x1b[0m\n", 1);
 	if (WTERMSIG(child_status) == 8)
 		ft_putstr_fd_ut("\x1b[33m[SIGFPE]\x1b[0m\n", 1);
+	if (WTERMSIG(child_status) == 14)
+		ft_putstr_fd_ut("\x1b[33m[SIGALRM]\x1b[0m\n", 1);
 	routine->success = -1;
 }
 
