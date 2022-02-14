@@ -6,9 +6,12 @@
 #    By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/29 12:16:09 by cdefonte          #+#    #+#              #
-#    Updated: 2022/02/13 17:09:31 by fle-blay         ###   ########.fr        #
+#    Updated: 2022/02/14 08:49:19 by fle-blay         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+#Libft Modifiee pour ajouter ft_satoi
+#ft_satoi modifiee pour renvoyer une erreur si le dernier char n'est pas un \n
 
 NAME = alum1
 
