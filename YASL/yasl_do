@@ -1,21 +1,5 @@
-#! ressources/yasl_linux
-
-!
-!
-
-#
-3
-!= ? (1 exit)
-
-" " +
-# ^
-" " +
-# ^
-0:=:1 0:!
-0:+
-1:=:0 1:!
-0:+
-" " +
-eval
-0:print
-"\n" print
+#!yasl
+! !
+# 3 != ? ( "yasl_do <value1> <operator> <value2>\n" print 1 exit )
+" " + 3 ^ " " + 3 ^ + + " " + eval
+# ? ( print "\n" print)

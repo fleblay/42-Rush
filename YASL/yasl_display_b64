@@ -1,0 +1,46 @@
+#!yasl_linux
+
+#
+#!
+
+
+""
+1
+@(
+read
+0
+== ? (0) : (+ 1)
+)
+!
+
+[#]
+"Image received, nb pixels :" print print "\n" print
+[#]
+
+=
+sqrti
+=
+*
+%!= ? (1 exit)
+!
+sqrti
+0:=:1
+0:=:2
+"Found square :" print print "\n" print
+
+1:%@(
+2:=:1
+1:%@(
+	"-":1 1:print	
+	-1:1
+	1:+:1
+)
+1:!
+"\n":1 1:print
+-1:1
+1:+:1
+)
+
+
+// 0 : string
+// 1 : square

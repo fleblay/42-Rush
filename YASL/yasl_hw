@@ -1,11 +1,2 @@
-#!ressources/yasl_linux
-
-#!
-
-"\n"
-"world"
-" "
-"Hello"
-
-#
-#print
+#!yasl
+"Hello world\n" print

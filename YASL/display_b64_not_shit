@@ -1,0 +1,134 @@
+#!yasl
+
+{ "\n" + print
+} println
+
+{
+    0 + // Cast into integer
+    0 // Iterator
+    = = * 3 ^ = 4 !^ < @ (
+        1 +
+        = = * 3 ^ = 4 !^ <
+    )
+    = 3 !^ = * < ? (1 -)
+} sqrti
+
+{
+    = = "A" >= 2 ^ "Z" <= && ? (
+        "A" -
+    ) : (
+    = = "a" >= 2 ^ "z" <= && ? (
+        "a" - 26 +
+    ) : (
+    = = "0" >= 2 ^ "9" <= && ? (
+        "0" - 52 +
+    ) : (
+    = "+" == ? (
+        ! 62
+    ) : (
+    = "/" == ? (
+        ! 63
+    ) : (
+    = "=" == ? (
+        "lol, wtf is padding?\n" print 1 exit
+    ) : ( "Not in base64\n" print 1 exit )
+    ))))) // Couldn't find a better way to do a long if-else
+} b64toi
+
+#
+#!
+
+
+""
+1
+@(
+read
+0
+== ? (0) : (+ 1)
+)
+!
+
+
+[#] = 0 == 2 ^ 4 % || ? ( "Invalid map\n" print 1 exit )
+[#] 4 /
+"Image received, nb pixels : " print print "\n" print
+[#] 4 /
+
+=
+sqrti
+=
+*
+%!= ? ("Not a square map\n" print 1 exit)
+!
+sqrti
+0:=:1
+"Found square : " print print "\n" print
+
+// Convert to base64 integer values
+][:2 2:!
+1:=
+#(
+    1:= 4 *
+    #(
+        2:= 2:!
+        b64toi
+    )
+)
+
+1:=
+#(
+    1:=
+    #(
+        // Convert 4 6bit values to a 24bit color value
+        18 << 4 !^
+        12 << 4 !^
+        6  << 4 !^
+        0  << 4 !^
+        + + +
+
+        // Convert into three R G and B 8 bit values values
+        = =
+        16 >>
+        0xff & 3 !^
+        8 >>
+        0xff & 3 !^
+        0 >>
+        0xff & 3 !^
+        //// \x1B[48;2;r;g;bm
+        "\e[48;2;" print print
+        ";" print print
+        ";" print print
+        "m  " print
+
+        //// Convert into shit
+        //6 * 256 / 3 !^
+        //6 * 256 / 3 !^
+        //6 * 256 / 3 !^
+        //6 * +
+        //6 * +
+        //16 +
+        //// \033[38;5;<SHIT>m
+        //"\e[48;5;" print print
+        //"m  " print
+    )
+    "\e[m" print
+    "\n" print
+)
+
+// 1:%@(
+// 2:=:1
+// 1:%@(
+// 	"-":1 1:print	
+// 	-1:1
+// 	1:+:1
+// )
+// 1:!
+// "\n":1 1:print
+// -1:1
+// 1:+:1
+// )
+
+//// Function test code
+//! !
+//= ": " + print
+//sqrti "\n" + print

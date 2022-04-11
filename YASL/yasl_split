@@ -1,0 +1,90 @@
+#!yasl_linux
+
+// stack 0 input
+// stack 1 separateur
+// stack 2 iterateur
+// stack 3 longeur
+// stack 4 lettre actuelle
+
+// Avance l'iterateur tant qu'on est sur un sep et quitte si fin de str
+
+{
+	3:%@(0:(
+		1:3 3:-:3
+		1:2 2:+:2
+		=
+		2:=:0
+		]#[:4
+		4:=:4
+		1:=:4
+		4:!= ? (0:3)
+	))
+	3:!
+	3:#:3
+	0:3
+	3:== ? (0 exit)
+	1:3 3:+:3
+	1:2 2:-:2
+}ft_advance_iterator
+
+!
+!
+#
+2
+!= ? ("bad number of arg\n" print 1 exit)
+[#]
+1
+!= ? ("separator is not one char long\n" print 1 exit)
+
+// Init : sep dans 1, iterateur dans 2, longueur dans 3
+=:1
+!
+0:2
+[#]:3
+
+[#]
+0
+== ? ("Empty string \n" print 1 exit)
+
+// On skip les premier separateurs
+
+3:%@(0:(
+	=
+	2:=:0
+	]#[:4
+	4:=:4
+	1:=:4
+	1:3 3:-:3
+	1:2 2:+:2
+	4: != ? (0:3 -1:2 2:+:2)
+))
+3:!
+
+3:#:3
+0:3
+3:== ? (0 exit)
+
+// On parcourt la string en printant les char et en skippant les sep
+3:%@(0:(
+	
+	=
+	2:=:0
+	]#[:4
+	4:=:4
+	1:=:4
+	4:!= ? (4:print) : (4:! "\n" print ft_advance_iterator)
+
+	1:3 3:-:3
+	1:2 2:+:2
+	))
+
+// Si le dernier char n'est pas un sep on le print
+
+=
+2:=:0
+]#[:4
+4:=:4
+1:=:4
+4:!= ? (4:print)
+
+"\n" print

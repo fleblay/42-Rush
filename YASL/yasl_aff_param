@@ -1,11 +1,6 @@
-#!ressources/yasl_linux
-
-0:!
-0:!
-
+#!yasl_linux
+!
+!
 #
-0
-== ? (1 exit)
-
-#
-#(print "\n" print)
+?
+(# #(print "\n" print))

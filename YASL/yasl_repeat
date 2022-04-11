@@ -1,37 +1,34 @@
-#!ressources/yasl_linux
+#!yasl
 
-{
-	1:=:0
-	0:%@
-	(
-		-1
-		+
-		0:=:2
-		0:!
-		0:=
-		0:print
-		2:=:0
-	)
-	0:!
-	1:1
-	1:+:1
-	0:"\n" 0:print
-	0:!
+{ = "0" >= 2 ^ "9" <= &&
+} ft_isdigit
 
-}print_str
+3 < ? ( " <start_num> <value1> [ <value2> [...] ]\n" + print 1 exit )
 
-!
-!
+# !^ // Stash program name
+= "" == ? ( # ^ ": <start_num> needs to be strictly positive integer\n" + print 1 exit)
+= ][:2
+2:=:3
+2:=
+2:!
+#(2:= 2:!)
+3:=
+3:!
+2 ^ "+" %== ? ( ! ! 1 -) : ( ! 2 ^ )
+#(
+    ft_isdigit ~~ ? (
+        ( # ^ ": <start_num> needs to be strictly positive integer\n" + print 1 exit)
+    )
+)
+// Cast <start_num> from string to integer
+0 +
+= 0 == ? ( # ^ ": <start_num> needs to be strictly positive integer\n" + print 1 exit)
+// Program name no longer needed, get rid of it
+# ^ !
 
-#
-2
-< ? ("Wrong arg number\n" print 1 exit)
-
-0
-%<= ? ("First arg must be strictly positive\n" print 1 exit)
-
-!
-0:=:1 0:!
-
-#
-#print_str
+# 1 - #( // Repeat for each value
+    = 3 !^ #( = print )
+    !
+    "\n" print
+    1 +
+)
