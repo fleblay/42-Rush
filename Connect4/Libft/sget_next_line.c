@@ -6,7 +6,7 @@
 /*   By: fle-blay <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 10:11:39 by fle-blay          #+#    #+#             */
-/*   Updated: 2022/07/04 09:27:42 by fle-blay         ###   ########.fr       */
+/*   Updated: 2022/07/04 09:54:33 by fle-blay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,11 +85,11 @@ int	sget_next_line(char **next_line, int fd)
 	if (!line)
 		return (-2);
 	load_ret = 1;
-	cumul_read = 0;
-	while (load_ret > 0 && !find_nl(line + cumul_read))
+	cumul_read = 1;
+	while (load_ret > 0 && !find_nl(line + cumul_read - load_ret))
 	{
 		load_ret = load_input(fd, &line, buf, BUFFER_SIZE);
-		cumul_read += (cumul_read == 0) * (-load_ret) + load_ret;
+		cumul_read += load_ret;
 	}
 	if (load_ret < 0 || (!find_nl(line) && ft_strlen(line) == 0))
 		return (free(line), load_ret);
